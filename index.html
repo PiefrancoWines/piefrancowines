@@ -16,10 +16,10 @@
 
       // ── REGISTRO DE APERTURA (EmailJS) ───────────────────────
       // Crea cuenta gratis en emailjs.com y rellena estos valores
-      EMAILJS_SERVICE:  'YOUR_SERVICE_ID',
-      EMAILJS_TEMPLATE: 'YOUR_TEMPLATE_ID',
-      EMAILJS_KEY:      'YOUR_PUBLIC_KEY',
-      NOTIFY_EMAIL:     'tu@email.com',   // 👈 Tu email
+      EMAILJS_SERVICE:  'service_9p8762h',
+      EMAILJS_TEMPLATE: 'template_w4dw0fg',
+      EMAILJS_KEY:      'u_c74Kd534pLuMTUO',
+      NOTIFY_EMAIL:     'joseaponte1936@gmail.com',   // 👈 Tu email
     };
   </script>
 
@@ -495,10 +495,14 @@
       // Solo envía si EmailJS está configurado
       if (CFG.EMAILJS_KEY === 'YOUR_PUBLIC_KEY') return;
 
+      // Evita notificaciones repetidas en el mismo navegador
+      if (localStorage.getItem('notified')) return;
+      localStorage.setItem('notified', 'true');
+
       try {
         emailjs.init(CFG.EMAILJS_KEY);
 
-        const now  = new Date();
+        const now = new Date();
         const hora = now.toLocaleString('es-PR', {
           timeZone: 'America/Puerto_Rico',
           dateStyle: 'full',
@@ -506,9 +510,9 @@
         });
 
         emailjs.send(CFG.EMAILJS_SERVICE, CFG.EMAILJS_TEMPLATE, {
-          to_email:  CFG.NOTIFY_EMAIL,
-          open_time: hora,
+          time: hora,
           user_agent: navigator.userAgent.substring(0, 120),
+          url: window.location.href
         });
       } catch(e) {
         console.warn('EmailJS no configurado:', e);
